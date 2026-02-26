@@ -3,4 +3,6 @@
 *.pdf
 *.pptx
 *.txt
+!requirements.txt
+
 
