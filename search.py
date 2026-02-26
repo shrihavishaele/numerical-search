@@ -1,18 +1,27 @@
+import os
 import json
+import streamlit as st
 from elasticsearch import Elasticsearch
 from sentence_transformers import SentenceTransformer, util
 
-ES_HOST = "http://localhost:9200"
 INDEX_NAME = "qfacts_index"
 TOP_K_ES = 20
 
 # Load BERT model once
 bert_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
-es = Elasticsearch(ES_HOST)
+# Connect to Elasticsearch — supports both local and Elastic Cloud
+if "ES_CLOUD_ID" in st.secrets:
+    es = Elasticsearch(
+        cloud_id=st.secrets["ES_CLOUD_ID"],
+        api_key=st.secrets["ES_API_KEY"],
+    )
+else:
+    ES_HOST = os.getenv("ES_HOST", "http://localhost:9200")
+    es = Elasticsearch(ES_HOST)
 
 if not es.ping():
-    raise SystemExit(f"Cannot connect to Elasticsearch at {ES_HOST}")
+    raise SystemExit("Cannot connect to Elasticsearch")
 
 def build_es_query(user_query):
     should = []

@@ -4,5 +4,6 @@
 *.pptx
 *.txt
 !requirements.txt
+.streamlit/secrets.toml
 
 
