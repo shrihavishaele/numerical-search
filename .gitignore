@@ -1,0 +1,6 @@
+.venv/
+*.json
+*.pdf
+*.pptx
+*.txt
+
